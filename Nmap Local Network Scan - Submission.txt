@@ -1,0 +1,43 @@
+# Nmap Local Network Scan - Submission (TASK 1)
+
+## Objective
+Discover open ports on local network to understand service exposure and risks.
+
+## Environment
+- OS: Windows 10
+- Local IP: 192.168.1.168
+- Network range scanned: 192.168.1.0/24
+- Tools used: Nmap 7.98, Npcap, (Wireshark optional)
+
+## Command used
+`nmap -sS -T4 --open -oN scanned_results.txt 192.168.1.0/24`
+
+## Findings (important)
+- `192.168.1.1 (eLifeConnect - Arcadyan)`  
+  - Ports: 53/tcp (domain), 80/tcp (http), 443/tcp (https), 49152/tcp (unknown/ephemeral)
+- `192.168.1.131` (printer)  
+  - Ports: 80/tcp (http), 443/tcp (https), 515/tcp (printer), 631/tcp (ipp), 9100/tcp (jetdirect)
+- `192.168.1.147`  
+  - Ports: 80/tcp (http)
+- `192.168.1.154`  
+  - Ports: 60020/tcp (unknown), 62078/tcp (iphone-sync)
+- `192.168.1.155`  
+  - Ports: 49152/tcp (unknown), 62078/tcp (iphone-sync)
+- `192.168.1.168 (my PC)`  
+  - Ports: 135/tcp (msrpc), 139/tcp (netbios-ssn), 445/tcp (microsoft-ds - SMB)
+
+## Analysis and Risks
+- SMB (ports 139/445) on my PC is high-risk — can expose file shares and be targeted by exploits.
+- Router admin/web interfaces must be secured and firmware updated.
+- Printer exposes printing protocols that can be abused to leak documents or pivot.
+- Unknown ephemeral ports (49152, 60020) require version detection to see which service is running.
+
+## Recommendations
+1. Disable unused services (turn off File & Printer Sharing if not needed).  
+2. Update firmware and change default passwords on router and printer.  
+3. Disable UPnP if not required.  
+4. Use firewall rules to restrict SMB and other sensitive ports.  
+5. Put IoT/printers on a separate guest/VLAN network if possible.
+
+## Files included
+- Screenshots (terminal & Wireshark - optional)
